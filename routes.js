@@ -1,7 +1,7 @@
 import express from 'express';
 import {
     createOrUpdateInventoryItem,
-    deleteInventoryItemById,
+    // deleteInventoryItemById,
     getInventoryItemById,
     readAllInventoryItems
 } from './db.js';
@@ -13,7 +13,7 @@ router.get('/inventory', async (req, res) => {
     const { success, data } = await readAllInventoryItems();
 
     if (success) {
-        return res.json({ success, data });
+        return res.json({ data });
     }
     return res.status(500).json({ success: false, message: "Error" });
 });
@@ -24,7 +24,7 @@ router.get('/inventory/:id', async (req, res) => {
     const { success, data } = await getInventoryItemById(id);
 
     if (success) {
-        return res.json({ success, data });
+        return res.json({ data });
     }
 
     return res.status(500).json({ success: false, message: "Error" });
@@ -35,7 +35,7 @@ router.post('/inventory', async (req, res) => {
     const { success, data } = await createOrUpdateInventoryItem(req.body);
 
     if (success) {
-        return res.json({ success, data });
+        return res.json({ id: data });
     }
 
     return res.status(500).json({ success: false, message: 'Error' });
@@ -50,22 +50,22 @@ router.put('/inventory/:id', async (req, res) => {
     const { success, data } = await createOrUpdateInventoryItem(inventoryItem);
 
     if (success) {
-        return res.json({ success, data });
+        return res.json({ id: data });
     }
 
     return res.status(500).json({ success: false, message: "Error" });
 });
 
 // Delete Inventory Item by Id
-router.delete('/inventory/:id', async (req, res) => {
-    const { id } = req.params;
-    const { success, data } = await deleteInventoryItemById(id);
+// router.delete('/inventory/:id', async (req, res) => {
+//     const { id } = req.params;
+//     const { success, data } = await deleteInventoryItemById(id);
 
-    if (success) {
-        return res.json({ success, data });
-    }
+//     if (success) {
+//         return res.json({ data });
+//     }
 
-    return res.status(500).json({ success: false, message: 'Error' });
-});
+//     return res.status(500).json({ success: false, message: 'Error' });
+// });
 
 export default router;
