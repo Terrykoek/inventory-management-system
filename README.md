@@ -21,23 +21,11 @@
 
     Create a table in your AWS DynamoDB console with the following specifications:
 
-    | Header 1 | Header 2 |
-    | ---------| ---------|
-    | Cell 1   | Cell 2   |
-
     Table Name: inventoryTable
 
-    Partition Key: name (String)
-
-    attributes: 
-
-    category (String)
-
-    id (String)
-
-    last_updated_dt(String)
-
-    price(String)
+    | name (string)(Partition key) | category (String) | id (String) | last_updated_dt(String) | price(String) |
+    | ---------| ---------|
+    | notebook  | Stationary   | 37180ccd-fe08-47b2-967b-b68b34dca7a5   | 2024-01-12T14:08:07.169Z  | 5.12  |
 
 
 4. Install Dependencies
