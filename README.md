@@ -44,11 +44,15 @@
 
     To run the project locally:
 
+    ```sh
     node index.js
+    ```
 
     To run unit test:
 
+    ```sh
     npm test
+    ```
 
 6. Test Endpoints with Postman
 
@@ -57,24 +61,32 @@
     Endpoint: POST http://localhost:8000/api/inventory
 
     Request Body Example:
-
+    ```sh
     {
     "name": "Notebook",
     "category": "Stationary",
     "price": "5.5"
     }
+    ```
 
     Task 2: Get Inventory Items by Date Range
+
     Endpoint: POST http://localhost:8000/api/inventory/date-range
-    Body Example:
+
+    Request Body Example:
+    ```sh
     {
     "dt_from": "2022-01-01 10:00:00",
     "dt_to": "2022-01-25 10:00:00"
     }
+    ```
 
     Task 3: Get Inventory Items by Category
+
     Endpoint: POST http://localhost:8000/api/inventory/category
+
     Request Body Example:
+    ```sh
     {
     "category": "all"
     }
@@ -82,8 +94,10 @@
     {
     "category": "Gift"
     }
+    ```
 
     For checking all items in table: Get all items from inventoryTable
+    
     Endpoint: GET http://localhost:8000/api
 
     View the respective response in postman
