@@ -22,8 +22,8 @@
     Create a table in your AWS DynamoDB console with the following specifications:
 
     | Header 1 | Header 2 |
-| ---------| ---------|
-| Cell 1   | Cell 2   |
+    | ---------| ---------|
+    | Cell 1   | Cell 2   |
 
     Table Name: inventoryTable
 
