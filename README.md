@@ -1,4 +1,6 @@
 ## Inventory management system
 ## Instructions for local setup
-Clone the project
+1. Clone the project
+2. Configure AWS Credentials
+Replace 
 
