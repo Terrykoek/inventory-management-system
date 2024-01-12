@@ -4,20 +4,26 @@
 2. Configure AWS Credentials
 
     Add your AWS Credentials in .env file 
-
+    ```sh
     AWS_ACCESS_KEY_ID=your-access-key-id
 
     AWS_SECRET_ACCESS_KEY=your-secret-access-key
+    ```
 
-    replace your region in db.config.js if required
-
+    Replace your region in db.config.js if required
+    ```sh
     AWS_REGION=your-aws-region
+    ```
 
     Else, you can conctact me for my AWS credentials which i am happy to share (PS: i'm not able to share via github as Github and AWS will chase me to remove)
 
 3. Create a DynamoDB table in AWS
 
     Create a table in your AWS DynamoDB console with the following specifications:
+
+    | Header 1 | Header 2 |
+| ---------| ---------|
+| Cell 1   | Cell 2   |
 
     Table Name: inventoryTable
 
@@ -97,7 +103,7 @@
     ```
 
     For checking all items in table: Get all items from inventoryTable
-    
+
     Endpoint: GET http://localhost:8000/api
 
     View the respective response in postman
