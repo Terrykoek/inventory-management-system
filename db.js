@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 const getInventoryItemByName = async (name) => {
     const params = {
         TableName: Table,
-        IndexName: 'name-index', // Replace with your actual index name if you have one
         KeyConditionExpression: 'name = :name',
         ExpressionAttributeValues: {
             ':name': name
@@ -21,7 +20,7 @@ const getInventoryItemByName = async (name) => {
     }
 };
 
-// Create or Update items in inventoryTable
+// Task 1: Create or Update items in inventoryTable
 const createOrUpdateInventoryItem = async (data = {}) => {
     const { name, category, price } = data;
     const formattedPrice = parseFloat(price).toFixed(2);
@@ -81,6 +80,77 @@ const createOrUpdateInventoryItem = async (data = {}) => {
     }
 };
 
+// task 2
+const getInventoryItemsByDateRange = async (dtFrom, dtTo) => {
+    const params = {
+        TableName: Table,
+        FilterExpression: "#last_updated_dt between :dtFrom and :dtTo",
+        ExpressionAttributeNames: {
+            "#last_updated_dt": "last_updated_dt"
+        },
+        ExpressionAttributeValues: {
+            ":dtFrom": dtFrom,
+            ":dtTo": dtTo
+        }
+    };
+
+    try {
+        const { Items = [] } = await db.scan(params).promise();
+
+        // Calculate total price
+        const totalPrice = Items.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
+
+        return { success: true, data: { items: Items, total_price: totalPrice } };
+    } catch (error) {
+        console.error('Error in getInventoryItemsByDateRange:', error);
+        return { success: false, data: null };
+    }
+};
+
+// Task 3: Get Inventory Items by Category
+const getInventoryItemsByCategory = async (category) => {
+    const params = {
+        TableName: Table,
+        ProjectionExpression: "id, #name, category, price",
+        ExpressionAttributeNames: {
+            "#name": "name"
+        }
+    };
+
+    try {
+        const { Items = [] } = await db.scan(params).promise();
+
+        let filteredItems = [];
+        if (category && category.toLowerCase() !== 'all') {
+            filteredItems = Items.filter(item => item.category === category);
+        } else {
+            filteredItems = Items;
+        }
+
+        // Aggregation
+        const categoryAggregation = filteredItems.reduce((aggregation, item) => {
+            const existingCategory = aggregation.find(cat => cat.category === item.category);
+
+            if (existingCategory) {
+                existingCategory.total_price = (parseFloat(existingCategory.total_price) + parseFloat(item.price)).toFixed(2);
+                existingCategory.count += 1;
+            } else {
+                aggregation.push({
+                    category: item.category,
+                    total_price: item.price,
+                    count: 1
+                });
+            }
+
+            return aggregation;
+        }, []);
+
+        return { success: true, data: { items: categoryAggregation } };
+    } catch (error) {
+        console.error('Error in getInventoryItemsByCategory:', error);
+        return { success: false, data: null };
+    }
+};
 
 // Read all items from inventoryTable
 const readAllInventoryItems = async () => {
@@ -97,46 +167,11 @@ const readAllInventoryItems = async () => {
     }
 };
 
-// Read Item by ID from inventoryTable
-const getInventoryItemById = async (value, key = 'id') => {
-    const params = {
-        TableName: Table,
-        Key: {
-            [key]: parseInt(value)
-        }
-    };
-
-    try {
-        const { Item = {} } = await db.get(params).promise();
-        return { success: true, data: Item };
-    } catch (error) {
-        console.error('Error in getInventoryItemById:', error);
-        return { success: false, data: null };
-    }
-};
-
-// // Delete Item by ID from inventoryTable
-// const deleteInventoryItemById = async (value, key = 'id') => {
-//     const params = {
-//         TableName: Table,
-//         Key: {
-//             [key]: parseInt(value)
-//         }
-//     };
-
-//     try {
-//         await db.delete(params).promise();
-//         return { success: true };
-//     } catch (error) {
-//         console.error('Error in deleteInventoryItemById:', error);
-//         return { success: false };
-//     }
-// };
 
 export {
     createOrUpdateInventoryItem,
     getInventoryItemByName,
-    readAllInventoryItems,
-    getInventoryItemById,
-    // deleteInventoryItemById
+    getInventoryItemsByDateRange,
+    getInventoryItemsByCategory,
+    readAllInventoryItems
 };
