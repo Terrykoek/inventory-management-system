@@ -1,6 +1,22 @@
 import { db, Table } from './db.config.js';
 import { v4 as uuidv4 } from 'uuid';
 
+// Function to get all items from inventoryTable for checking
+const getAllInventoryItems = async () => {
+    const params = {
+        TableName: Table
+    };
+
+    try {
+        const { Items = [] } = await db.scan(params).promise();
+        return { success: true, data: Items };
+    } catch (error) {
+        console.error('Error in getAllInventoryItems:', error);
+        return { success: false, data: null };
+    }
+};
+
+// Task 1: Create or Update items in inventoryTable
 // Function to get an inventory item by name
 const getInventoryItemByName = async (name) => {
     const params = {
@@ -12,15 +28,14 @@ const getInventoryItemByName = async (name) => {
     };
 
     try {
-        const { Items = [] } = await db.query(params).promise();
+        const { Items = [] } = await db.query(params).promise(); //using query here based on name
         return { success: true, data: Items[0] || null };
     } catch (error) {
         console.error('Error in getInventoryItemByName:', error);
         return { success: false, message: error.message, data: null };
     }
 };
-
-// Task 1: Create or Update items in inventoryTable
+// Function to create or updateinventoryitem based on name
 const createOrUpdateInventoryItem = async (data = {}) => {
     const { name, category, price } = data;
     const formattedPrice = parseFloat(price).toFixed(2);
@@ -47,7 +62,7 @@ const createOrUpdateInventoryItem = async (data = {}) => {
             };
 
             try {
-                await db.update(params).promise();
+                await db.update(params).promise(); // use .update
                 return { success: true, data: existingItem.id };
             } catch (error) {
                 console.error('Error in updateInventoryItem:', error);
@@ -80,7 +95,7 @@ const createOrUpdateInventoryItem = async (data = {}) => {
     }
 };
 
-// task 2
+// task 2: get inventory items based on date range in request
 const getInventoryItemsByDateRange = async (dtFrom, dtTo) => {
     const params = {
         TableName: Table,
@@ -97,8 +112,7 @@ const getInventoryItemsByDateRange = async (dtFrom, dtTo) => {
     try {
         const { Items = [] } = await db.scan(params).promise();
 
-        // Calculate total price
-        const totalPrice = Items.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
+        // Calculate total price        const totalPrice = Items.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
 
         return { success: true, data: { items: Items, total_price: totalPrice } };
     } catch (error) {
@@ -107,7 +121,7 @@ const getInventoryItemsByDateRange = async (dtFrom, dtTo) => {
     }
 };
 
-// Task 3: Get Inventory Items by Category
+// Task 3: Get Inventory Items based on Category
 const getInventoryItemsByCategory = async (category) => {
     const params = {
         TableName: Table,
@@ -152,26 +166,10 @@ const getInventoryItemsByCategory = async (category) => {
     }
 };
 
-// Read all items from inventoryTable
-const readAllInventoryItems = async () => {
-    const params = {
-        TableName: Table
-    };
-
-    try {
-        const { Items = [] } = await db.scan(params).promise();
-        return { success: true, data: Items };
-    } catch (error) {
-        console.error('Error in readAllInventoryItems:', error);
-        return { success: false, data: null };
-    }
-};
-
-
 export {
     createOrUpdateInventoryItem,
     getInventoryItemByName,
     getInventoryItemsByDateRange,
     getInventoryItemsByCategory,
-    readAllInventoryItems
+    getAllInventoryItems
 };
