@@ -112,8 +112,7 @@ const getInventoryItemsByDateRange = async (dtFrom, dtTo) => {
     try {
         const { Items = [] } = await db.scan(params).promise();
 
-        // Calculate total price        const totalPrice = Items.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
-
+        const totalPrice = Items.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2);
         return { success: true, data: { items: Items, total_price: totalPrice } };
     } catch (error) {
         console.error('Error in getInventoryItemsByDateRange:', error);
