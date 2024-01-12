@@ -12,7 +12,7 @@
 
     Replace your region in db.config.js if required
     ```sh
-        region=your-aws-region
+    region=your-aws-region
     ```
 
     Else, you can contact me for my AWS credentials which i am happy to share (PS: i'm not able to share via github as Github and AWS will chase me to remove)
