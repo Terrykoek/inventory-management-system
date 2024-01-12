@@ -3,28 +3,36 @@
 1. Clone the project
 2. Configure AWS Credentials
 
-Add your AWS Credentials in .env file 
+    Add your AWS Credentials in .env file 
 
-AWS_ACCESS_KEY_ID=your-access-key-id
+    AWS_ACCESS_KEY_ID=your-access-key-id
 
-AWS_SECRET_ACCESS_KEY=your-secret-access-key
+    AWS_SECRET_ACCESS_KEY=your-secret-access-key
 
-replace your region in db.config.js if required
+    replace your region in db.config.js if required
 
-AWS_REGION=your-aws-region
+    AWS_REGION=your-aws-region
 
-Else, you can conctact me for my AWS credentials (i'm not able to share via github as Github and AWS will stop me)
+    Else, you can conctact me for my AWS credentials (i'm not able to share via github as Github and AWS will stop me)
 
 3. Create a DynamoDB table in AWS
-Create a table in your AWS DynamoDB console with the following specifications:
 
-Table Name: inventoryTable
-Partition Key: name (String)
-attributes: 
-category (String)
-id (String)
-last_updated_dt(String)
-price(String)
+    Create a table in your AWS DynamoDB console with the following specifications:
+
+    Table Name: inventoryTable
+
+    Partition Key: name (String)
+
+    attributes: 
+
+    category (String)
+
+    id (String)
+
+    last_updated_dt(String)
+
+    price(String)
+
 
 4. Install Dependencies
 
