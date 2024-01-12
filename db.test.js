@@ -30,6 +30,7 @@ describe('getInventoryItemByName', () => {
         const mockQuery = jest.fn().mockReturnValueOnce({ promise: jest.fn().mockResolvedValueOnce({ Items: [{ id: 'item1' }] }) });
         db.query.mockImplementation(mockQuery);
 
+
         const result = await getInventoryItemByName('item1');
 
         expect(result.success).toBe(true);
@@ -43,9 +44,99 @@ describe('getInventoryItemByName', () => {
 
 });
 
-describe('createOrUpdateInventoryItem', () => {
+// describe('createOrUpdateInventoryItem', () => {
+//     it('should update an existing item if the price is different', async () => {
+//         // Mock the existing item with a different price
+//         const mockGetInventoryItemByName = jest.fn().mockResolvedValueOnce({ success: true, data: { id: '6ebdbe6d-acfc-4a13-92d0-f0893f009a08', price: '10.00' } });
+//         const mockUpdate = jest.fn().mockReturnValueOnce({ promise: jest.fn().mockResolvedValueOnce({}) });
+//         console.log('mockGetInventoryItemByName', mockGetInventoryItemByName);
+//         console.log('mockUpdate', mockUpdate);
 
+//         // Mock dependencies
+//         jest.mock('./db', () => ({
+//             ...jest.requireActual('./db'),
+//             getInventoryItemByName: mockGetInventoryItemByName,
+//         }));
 
+//         db.update.mockImplementation(mockUpdate);
 
+//         // Call the function
+//         const result = await createOrUpdateInventoryItem({ name: 'dumbbell', price: '15.00' });
+//         console.log('result', result);
 
+//         // Assertions
+//         expect(result.success).toBe(true);
+//         expect(result.data).toEqual('existing-item');
+//         expect(mockGetInventoryItemByName).toHaveBeenCalledWith('existing-item');
+//         expect(mockUpdate).toHaveBeenCalledWith({
+//             TableName: Table,
+//             Key: { id: 'existing-item' },
+//             UpdateExpression: 'SET #p = :price, last_updated_dt = :last_updated_dt',
+//             ExpressionAttributeNames: { '#p': 'price' },
+//             ExpressionAttributeValues: {
+//                 ':price': '15.00',
+//                 ':last_updated_dt': expect.any(String), // This will check if the value is a string (ISO date)
+//             },
+//         });
+//     });
+// });
+
+// task 2: get inventory items based on date range in request
+describe('getInventoryItemsByDateRange', () => {
+    it('should retrieve inventory items within a specified date range', async () => {
+        const dtFrom = '2023-01-01T00:00:00.000Z';
+        const dtTo = '2023-12-31T23:59:59.999Z';
+
+        const mockScan = jest.fn().mockReturnValueOnce({
+            promise: jest.fn().mockResolvedValueOnce({
+                Items: [{ id: 'item1', price: '10.00' }, { id: 'item2', price: '20.00' }],
+            }),
+        });
+
+        db.scan.mockImplementation(mockScan);
+
+        const result = await getInventoryItemsByDateRange(dtFrom, dtTo);
+
+        expect(result.success).toBe(true);
+        expect(result.data.items).toEqual([{ id: 'item1', price: '10.00' }, { id: 'item2', price: '20.00' }]);
+        expect(result.data.total_price).toBe('30.00');
+        expect(mockScan).toHaveBeenCalledWith({
+            TableName: Table,
+            FilterExpression: '#last_updated_dt between :dtFrom and :dtTo',
+            ExpressionAttributeNames: { '#last_updated_dt': 'last_updated_dt' },
+            ExpressionAttributeValues: { ':dtFrom': dtFrom, ':dtTo': dtTo },
+        });
+    });
 });
+
+// Task 3: Get Inventory Items based on Category
+describe('getInventoryItemsByCategory', () => {
+    it('should retrieve inventory items aggregated by category', async () => {
+        const category = 'Fitness Equipment';
+
+        const mockScan = jest.fn().mockReturnValueOnce({
+            promise: jest.fn().mockResolvedValueOnce({
+                Items: [
+                    { id: 'item1', category: 'Fitness Equipment', price: '10.00' },
+                    { id: 'item2', category: 'Fitness Equipment', price: '20.00' },
+                ],
+            }),
+        });
+
+        db.scan.mockImplementation(mockScan);
+
+        const result = await getInventoryItemsByCategory(category);
+
+        expect(result.success).toBe(true);
+        expect(result.data.items).toEqual([
+            { category: 'Fitness Equipment', total_price: '30.00', count: 2 },
+        ]);
+        expect(mockScan).toHaveBeenCalledWith({
+            TableName: Table,
+            ProjectionExpression: 'id, #name, category, price',
+            ExpressionAttributeNames: { '#name': 'name' },
+        });
+    });
+});
+
+
