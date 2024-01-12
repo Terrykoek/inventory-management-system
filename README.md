@@ -2,10 +2,15 @@
 ## Instructions for local setup
 1. Clone the project
 2. Configure AWS Credentials
+
 Add your AWS Credentials in .env file 
+
 AWS_ACCESS_KEY_ID=your-access-key-id
+
 AWS_SECRET_ACCESS_KEY=your-secret-access-key
+
 replace your region in db.config.js if required
+
 AWS_REGION=your-aws-region
 
 Else, you can conctact me for my AWS credentials (i'm not able to share via github as Github and AWS will stop me)
