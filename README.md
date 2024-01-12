@@ -21,9 +21,11 @@
 
     Create a table in your AWS DynamoDB console with the following specifications:
 
+    e.g
+
     Table Name: inventoryTable
 
-    | name (string)(Partition key) | category (String) | id (String) | last_updated_dt(String) | price(String) |
+    | name (String)(Partition key) | category (String) | id (String) | last_updated_dt(String) | price(String) |
     | ---------| ---------| ---------| ---------| ---------|
     | notebook  | Stationary | 37180ccd-fe08-47b2-967b-b68b34dca7a5 | 2024-01-12T14:08:07.169Z | 5.12 |
 
@@ -52,7 +54,7 @@
 
     Task 1: Create or Update Inventory Item
 
-    Endpoint: POST http://localhost:8000/api/inventory
+    POST http://localhost:8000/api/inventory
 
     Request Body Example:
     ```sh
@@ -65,7 +67,7 @@
 
     Task 2: Get Inventory Items by Date Range
 
-    Endpoint: POST http://localhost:8000/api/inventory/date-range
+    POST http://localhost:8000/api/inventory/date-range
 
     Request Body Example:
     ```sh
@@ -77,7 +79,7 @@
 
     Task 3: Get Inventory Items by Category
 
-    Endpoint: POST http://localhost:8000/api/inventory/category
+    POST http://localhost:8000/api/inventory/category
 
     Request Body Example:
     ```sh
@@ -92,6 +94,6 @@
 
     For checking all items in table: Get all items from inventoryTable
 
-    Endpoint: GET http://localhost:8000/api
+    GET http://localhost:8000/api
 
     View the respective response in postman
