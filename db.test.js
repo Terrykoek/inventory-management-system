@@ -5,7 +5,7 @@ import {
     getInventoryItemsByCategory,
     getAllInventoryItems,
 } from './db'; 
-import { db, Table } from './db.config'; // Import the required modules
+import { db, Table } from './db.config';
 
 // Mock the dependencies or set up the testing environment as needed
 jest.mock('./db.config');
@@ -101,5 +101,3 @@ describe('getInventoryItemsByCategory', () => {
         });
     });
 });
-
-
