@@ -1,5 +1,12 @@
 ## Inventory management system
+
+## Tools used
+1. Node.JS
+2. AWS DynamoDB
+3. Jest for unit test
+
 ## Instructions for local setup
+
 1. Clone the project
 2. Configure AWS Credentials
 
@@ -50,11 +57,12 @@
     npm test
     ```
 
-6. Test Endpoints with Postman
+6. Test all 3 functions with Postman
 
-    Task 1: Create or Update Inventory Item
-
+    Task 1: Create a function to insert a new item. If re-inserting an item with the same name, the record should be updated with the new price. The record should include a "last_updated_dt" field to indicate the date of insertion/update. The "price" should be stored as a string and formatted with two decimal places in the database. Return the server-assigned ID for the newly created item; the server-assigned ID can also be a UUID.
     POST http://localhost:8000/api/inventory
+
+    To Create or Update Inventory Item
 
     Request Body Example:
     ```sh
@@ -65,7 +73,9 @@
     }
     ```
 
-    Task 2: Get Inventory Items by Date Range
+    Task 2: By passing a date range as a filter, query all the items with the "last_updated_dt" within the specified date range. The response should include an additional field indicating the total price of all the items.
+    
+    To Get Inventory Items by Date Range
 
     POST http://localhost:8000/api/inventory/date-range
 
@@ -77,7 +87,9 @@
     }
     ```
 
-    Task 3: Get Inventory Items by Category
+    Task 3: Perform aggregation on the data by passing in a category. Return items by category along with the total price in the response format below. If the category "all" is passed, it should return all categories; otherwise, it should return items belonging to that category.
+    
+    To Get Inventory Items by Category
 
     POST http://localhost:8000/api/inventory/category
 
@@ -92,8 +104,12 @@
     }
     ```
 
-    For checking all items in table: Get all items from inventoryTable
+    Additional function for checking all items in table: 
+    
+    To Get all items from inventoryTable
 
     GET http://localhost:8000/api
 
-    View the respective response in postman
+    View the respective responses in postman
+
+    Run unit test to test the functions

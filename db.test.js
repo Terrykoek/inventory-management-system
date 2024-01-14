@@ -4,7 +4,7 @@ import {
     getInventoryItemsByDateRange,
     getInventoryItemsByCategory,
     getAllInventoryItems,
-} from './db';
+} from './db'; 
 import { db, Table } from './db.config'; // Import the required modules
 
 // Mock the dependencies or set up the testing environment as needed
@@ -43,43 +43,6 @@ describe('getInventoryItemByName', () => {
     });
 
 });
-
-// describe('createOrUpdateInventoryItem', () => {
-//     it('should update an existing item if the price is different', async () => {
-//         // Mock the existing item with a different price
-//         const mockGetInventoryItemByName = jest.fn().mockResolvedValueOnce({ success: true, data: { id: '6ebdbe6d-acfc-4a13-92d0-f0893f009a08', price: '10.00' } });
-//         const mockUpdate = jest.fn().mockReturnValueOnce({ promise: jest.fn().mockResolvedValueOnce({}) });
-//         console.log('mockGetInventoryItemByName', mockGetInventoryItemByName);
-//         console.log('mockUpdate', mockUpdate);
-
-//         // Mock dependencies
-//         jest.mock('./db', () => ({
-//             ...jest.requireActual('./db'),
-//             getInventoryItemByName: mockGetInventoryItemByName,
-//         }));
-
-//         db.update.mockImplementation(mockUpdate);
-
-//         // Call the function
-//         const result = await createOrUpdateInventoryItem({ name: 'dumbbell', price: '15.00' });
-//         console.log('result', result);
-
-//         // Assertions
-//         expect(result.success).toBe(true);
-//         expect(result.data).toEqual('existing-item');
-//         expect(mockGetInventoryItemByName).toHaveBeenCalledWith('existing-item');
-//         expect(mockUpdate).toHaveBeenCalledWith({
-//             TableName: Table,
-//             Key: { id: 'existing-item' },
-//             UpdateExpression: 'SET #p = :price, last_updated_dt = :last_updated_dt',
-//             ExpressionAttributeNames: { '#p': 'price' },
-//             ExpressionAttributeValues: {
-//                 ':price': '15.00',
-//                 ':last_updated_dt': expect.any(String), // This will check if the value is a string (ISO date)
-//             },
-//         });
-//     });
-// });
 
 // task 2: get inventory items based on date range in request
 describe('getInventoryItemsByDateRange', () => {
