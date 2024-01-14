@@ -60,9 +60,10 @@
 6. Test all 3 functions with Postman
 
     Task 1: Create a function to insert a new item. If re-inserting an item with the same name, the record should be updated with the new price. The record should include a "last_updated_dt" field to indicate the date of insertion/update. The "price" should be stored as a string and formatted with two decimal places in the database. Return the server-assigned ID for the newly created item; the server-assigned ID can also be a UUID.
-    POST http://localhost:8000/api/inventory
 
     To Create or Update Inventory Item
+
+    POST http://localhost:8000/api/inventory
 
     Request Body Example:
     ```sh
